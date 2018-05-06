@@ -6,7 +6,7 @@ import {
   View,
   TextInput,
   Button,
-  ScrollView,
+  // ScrollView,
   Dimensions,
   ListView,
   Alert,
@@ -15,6 +15,7 @@ import {
   RefreshControl,
   Image
 } from 'react-native';
+import Swiper from 'react-native-swiper';
 
 
 // const instructions = Platform.select({
@@ -23,8 +24,8 @@ import {
 //   android: 'Double tap R on your keyboard to reload,\n' +
 //     'Shake or press menu button for dev menu',
 // });
-const circleSize = 8;
-const circleMargin = 5;
+// const circleSize = 8;
+// const circleMargin = 5;
 
 type Props = {};
 export default class Home extends Component<Props> {
@@ -174,8 +175,8 @@ export default class Home extends Component<Props> {
       refreshing:false,
     };
   }
-
-  componentDidMount(){
+//使用Swiper
+  /* componentDidMount(){
     this._startTimer();
   }
 
@@ -194,7 +195,7 @@ export default class Home extends Component<Props> {
       this.refs.scrollView.scrollTo({x: offSetX, y: 0, animated: true})
       // this.refs.scrollView.scrollToEnd({animated: false});
     },5000);
-  }
+  } */
 
   _renderRow(rowData){
     return (
@@ -254,9 +255,9 @@ export default class Home extends Component<Props> {
   }
 
   render() {
-    const advertisementCount=this.state.advertisements.length//指示器圆点数
-    const indicatorWidth = circleSize*advertisementCount + circleMargin*advertisementCount*2
-    const left=(Dimensions.get('window').width-indicatorWidth)/2
+    // const advertisementCount=this.state.advertisements.length//指示器圆点数
+    // const indicatorWidth = circleSize*advertisementCount + circleMargin*advertisementCount*2
+    // const left=(Dimensions.get('window').width-indicatorWidth)/2
     
     return (
       <View  style={styles.container}>
@@ -283,43 +284,33 @@ export default class Home extends Component<Props> {
         </View>
 
         <View style={styles.advertisement}>
-          <ScrollView ref={'scrollView'}
-            // this.refs.scrollView 可获取改组件
-            horizontal={true}//横向滚动
-            showsHorizontalScrollIndicator={false}//不显示横向滚动条
-            pagingEnabled={true}//分页
-          >
-            {
-              this.state.advertisements.map(
-                (advertisement,index)=>{
-                  return (
-                    <TouchableHighlight key={index}
-                      onPress={()=>Alert.alert('你单击了轮播广告',null,null)}
-                    >
-                      <Image style={styles.advertismentContent}
-                        // source={{uri:advertisement.url}}
-                        source={advertisement.image}
-                      >
-                      </Image>
-                    </TouchableHighlight>
-                  )
-                }
-              )
-            }
-          </ScrollView>
-          <View style={[styles.indicator,{left:left}]}>
-            {this.state.advertisements.map(
+        <Swiper 
+          loop={true}
+          // height={190}
+          autoplay={true}
+          // showsPagination={false}
+          activeDotColor={'white'}
+          // dotColor={'black'}
+          paginationStyle={{bottom:10}}
+        >
+          {
+            this.state.advertisements.map(
               (advertisement,index)=>{
                 return (
-                  <View key={index}
-                    style={(index===this.state.currentPage)?styles.circleSelected:styles.circle}
+                  <TouchableHighlight key={index}
+                    onPress={()=>Alert.alert('你单击了轮播广告',null,null)}
                   >
-                  </View>
+                    <Image style={styles.advertismentContent}
+                      // source={{uri:advertisement.url}}
+                      source={advertisement.image}
+                    >
+                    </Image>
+                  </TouchableHighlight>
                 )
               }
             )
           }
-          </View>
+        </Swiper>
         </View>
 
         <View style={styles.products}>
@@ -372,9 +363,9 @@ const styles = StyleSheet.create({
 
   advertisement: {
     height:180,
-    backgroundColor: 'green',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // backgroundColor: 'green',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   },
   products: {
     flex: 1,
@@ -423,25 +414,25 @@ const styles = StyleSheet.create({
     width:Dimensions.get('window').width,
     height:180,
   },
-  indicator: {
-    position: 'absolute',
-    top: 160,
-    flexDirection: 'row',
-  },
-  circle: {
-    width:circleSize,
-    height:circleSize,
-    borderRadius:circleSize/2,
-    backgroundColor:'gray',
-    marginHorizontal:circleMargin,
-  },
-  circleSelected: {
-    width:circleSize,
-    height:circleSize,
-    borderRadius:circleSize/2,
-    backgroundColor:'white',
-    marginHorizontal:circleMargin,
-  },
+  // indicator: {
+  //   position: 'absolute',
+  //   top: 160,
+  //   flexDirection: 'row',
+  // },
+  // circle: {
+  //   width:circleSize,
+  //   height:circleSize,
+  //   borderRadius:circleSize/2,
+  //   backgroundColor:'gray',
+  //   marginHorizontal:circleMargin,
+  // },
+  // circleSelected: {
+  //   width:circleSize,
+  //   height:circleSize,
+  //   borderRadius:circleSize/2,
+  //   backgroundColor:'white',
+  //   marginHorizontal:circleMargin,
+  // },
 });
 
 
