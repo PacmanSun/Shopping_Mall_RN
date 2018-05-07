@@ -1,30 +1,80 @@
-import React from 'react';
+import React, { /* Component */ } from 'react';
 // import { Text, View } from 'react-native';
-import { TabNavigator,TabBarBottom } from 'react-navigation';
+import { TabNavigator,/*  TabBarBottom */ } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import Nav from './Nav';
+import Mall from './Mall';
 import More from './More';
+import { Platform } from 'react-native';
+// import { Container, Icon, Button, Footer, FooterTab } from 'native-base';
 
 // const RootStack = TabNavigator({
-//   Nav: {
-//     screen: Nav,
+//   Mall: {
+//     screen: Mall,
 //   },
-//   more: {
+//   More: {
 //     screen: More,
 //   },
-// });
+// },
+//   {
+//     navigationOptions: {
+//       tabBarVisible: false
+//     }
+//   }
+// );
 
-// export default class App extends React.Component {
+// type Props = {};
+// export default class App extends Component<Props> {
+
+//   constructor(Props) {
+//     super(Props);
+//     this.state = {
+//       selectedTab: 'Mall',
+//     };
+//     this.renderContent=()=>{
+//       if (this.state.selectedTab === 'Mall') {
+//         RootStack.props.navigation.navigate('Mall')
+//       }
+//       if (this.state.selectedTab === 'More') {
+//         RootStack.props.navigation.navigate('More')
+//       }
+//     };
+//   }
+
+
+
 //   render() {
-//     return <RootStack />;
+//     return (
+
+//       <Container>
+//         <RootStack>
+//         {RootStack._renderContent}
+//         </RootStack>
+//         <Footer>
+//           <FooterTab>
+//             <Button
+//               active={this.state.selectedTab === 'Mall'}
+//               onPress={() => this.setState({ selectedTab: 'Mall' })}
+//             >
+//               <Icon name="ios-cart"></Icon>
+//             </Button>
+//             <Button
+//               active={this.state.selectedTab === 'More'}
+//               onPress={() => this.setState({ selectedTab: 'More' })}
+//             >
+//               <Icon name="ios-more"></Icon>
+//             </Button>
+//           </FooterTab>
+//         </Footer>
+//       </Container>
+//     )
 //   }
 // }
 
 
 export default TabNavigator(
   {
-    Mall: { screen: Nav },
+    Mall: { screen: Mall },
     More: { screen: More },
   },
   {
@@ -47,13 +97,21 @@ export default TabNavigator(
                />;
       },
     }),
-    tabBarOptions: {
-      activeTintColor: 'tomato',
-      inactiveTintColor: 'gray',
-    },
-    tabBarComponent: TabBarBottom,
-    tabBarPosition: 'bottom',
-    animationEnabled: false,
-    swipeEnabled: false,
+    tabBarOptions: Platform.select({
+      ios:{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+      },
+      android:{
+        activeTintColor: 'white',
+        inactiveTintColor: 'white',
+        showIcon:true,
+        showLabel:false
+      },
+    }),
+    // tabBarComponent: TabBarBottom,
+    // tabBarPosition: 'bottom',
+    animationEnabled: true,
+    swipeEnabled: true,
   }
 );

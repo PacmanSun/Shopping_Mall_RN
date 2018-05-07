@@ -11,9 +11,18 @@ import { StyleSheet } from 'react-native';
 import { WebView } from 'react-native';
 import { Dimensions } from 'react-native';
 import { Platform } from 'react-native';
+import App from './App';
 
+export default class More extends React.Component {
 
-export default class App extends React.Component {
+  _renderContent() {
+    if (App.state.selectedTab === 'Mall') {
+      return this.props.navigation.navigate('Mall')
+    }
+    if (App.state.selectedTab === 'More') {
+      return this.props.navigation.navigate('More')
+    }
+  }
   render() {
     return (
       <View style={styles.container}>
