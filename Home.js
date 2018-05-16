@@ -6,10 +6,10 @@ import {
   Dimensions,
   Alert,
   TouchableHighlight,
-  Image
+  Image,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import { Container, Header, /* Content,  */Icon, Input, Button, Item, List, ListItem, Thumbnail, Text, Body } from 'native-base';
+import { Container, Header, Content, Icon, Input, Button, Item, List, ListItem, Thumbnail, Text, Body } from 'native-base';
 
 type Props = {};
 export default class Home extends Component<Props> {
@@ -27,58 +27,7 @@ export default class Home extends Component<Props> {
     super(Props);
     this.state = {
       currentPage: 0,
-      products: [
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品1',
-          subTitle: '描述1',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品2',
-          subTitle: '描述2',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品3',
-          subTitle: '描述3',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品4',
-          subTitle: '描述4',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品5',
-          subTitle: '描述5',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品6',
-          subTitle: '描述6',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品7',
-          subTitle: '描述7',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品8',
-          subTitle: '描述8',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品9',
-          subTitle: '描述9',
-        },
-        {
-          image: require('./images/product-image-01.jpg'),
-          title: '商品10',
-          subTitle: '描述10',
-        },
-      ],
+      products: [],
 
 
       advertisements: [
@@ -112,19 +61,25 @@ export default class Home extends Component<Props> {
     };
   }
 
+
+  componentDidMount() {
+    this._fetchProducts();
+  }
+
   _renderRow(rowData) {
     return (
       <ListItem
         style={{ height: 60 }}
         onPress={
           () => this.props.navigation.navigate('Details',
-            { title: rowData.title, subTitle: rowData.subTitle })}
+            { product: rowData })}
       >
         <Thumbnail
           square={true}
           // size={20}
           style={{ height: 40, width: 40 }}
-          source={rowData.image}
+          // source={rowData.image}
+          source={{ uri: SEVER_URL + String(rowData.image).substr(7) }}
         />
         <Body>
           <Text>{rowData.title}</Text>
@@ -134,13 +89,29 @@ export default class Home extends Component<Props> {
     );
   }
 
+  _fetchProducts() {
+
+    const req = new Request(SEVER_URL + '/' + PRODUCT_API, { method: 'GET' });
+    console.log('request: ', SEVER_URL + PRODUCT_API);
+    fetch(req).then((response) => response.json())
+      .then((responseJson) => {
+        console.log('response: ', JSON.stringify(responseJson));
+        this.setState({ products: responseJson })
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    fetch
+  }
+
+
   render() {
 
     return (
       <Container>
         <Header
           searchBar={true}
-          rounded={true}
+        // rounded={true}
         >
           <Item>
             <Icon name="ios-search-outline"></Icon>
@@ -188,15 +159,16 @@ export default class Home extends Component<Props> {
               }
             </Swiper>
           </View>
-
-          <List style={{ backgroundColor: 'white',height:Dimensions.get('window').height-290 }}
+        </View>
+        <Content>
+          <List style={{ backgroundColor: 'white'/* ,height:Dimensions.get('window').height-290 */ }}
             dataArray={this.state.products}
             renderRow={this._renderRow.bind(this)}
           >
 
           </List>
+        </Content>
 
-        </View>
       </Container>
     );
   }
@@ -215,4 +187,7 @@ const styles = StyleSheet.create({
   },
 });
 
+const LOCAL_HOST = '10.0.0.11'
+const SEVER_URL = 'http://' + LOCAL_HOST + ':3000';
+const PRODUCT_API = 'products/';
 
